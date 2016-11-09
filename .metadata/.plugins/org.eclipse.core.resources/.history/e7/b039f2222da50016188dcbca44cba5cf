@@ -1,0 +1,31 @@
+
+struct thread{
+	int id;
+	int stack_address;
+	int stack_size;
+	int stack_pointer;
+	int state;
+	int priority;
+};
+
+int numthreads =0;
+thread *threads[50];
+void initialize_thread(){
+	struct thread newT;
+
+	newT.id = numthreads;
+	numthreads++;
+	newT.stack_size = 700;
+	newT.stack_address = malloc(newT.stack_size);
+	newT.stack_pointer = newT.stack_address-newT.stack_size/2;
+	newT.state = 0;
+	newT.priority=0;
+	threads[newT.id] = &newT;
+}
+int current_thread = 0;
+int my_scheduler(int ra){
+	threads[current_thread]->stack_pointer= ra;
+	current_thread = (current_thread+1)%50;
+	return threads[current_thread];
+
+}

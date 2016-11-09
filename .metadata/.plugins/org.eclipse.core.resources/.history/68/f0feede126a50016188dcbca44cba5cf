@@ -1,0 +1,11 @@
+
+void my_interrupt_handler(){
+	printf("Test%d\n", k);
+	k++;
+}
+
+void initialize_alarm(){
+	if(alt_alarm_start(&alarm, alt_ticks_per_second(), my_interrupt_handler, NULL) != 0){
+			printf("ERROR WITH TIMER");
+		}
+}
