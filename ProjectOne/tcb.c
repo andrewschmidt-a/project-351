@@ -1,4 +1,4 @@
-
+#include <header.h>
 struct thread{
 	int id;
 	int stack_address;
@@ -9,21 +9,25 @@ struct thread{
 };
 
 int numthreads =0;
-struct thread threads[50];
-void initialize_thread(struct thread *mythread){
+struct thread threads[12];
+void initialize_thread(int num_thread){
 
-	(*mythread).stack_size = 700;
-	(*mythread).stack_address = malloc((*mythread).stack_size);
-	(*mythread).stack_pointer = (*mythread).stack_address-(*mythread).stack_size/2;
-	(*mythread).state = 0;
-	(*mythread).priority=0;
-	numthreads++;
+		threads[num_thread].stack_size = 700;
+		threads[num_thread].stack_address = malloc(threads[num_thread].stack_size);
+		threads[num_thread].stack_pointer = threads[num_thread].stack_address-threads[num_thread].stack_size/2;
+		threads[num_thread].state = 0;
+		threads[num_thread].priority=0;
 }
 int current_thread = 0;
 int my_scheduler(int sp){//round robin
+	if(current_thread == 0){
+		printf("Zero\n");
+	}
 	threads[current_thread].stack_pointer= sp;
-	current_thread = (current_thread+1)%50;
-	return threads[current_thread].stack_pointer;
+	current_thread = (current_thread+1)%12;
+	alt_printf("test:%x\n",current_thread );
+	//return threads[current_thread].stack_pointer;
+	return sp;
 }
 void destroy_thread(){
 

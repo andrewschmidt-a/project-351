@@ -19,27 +19,33 @@
 #include <sys\alt_irq.h>
 #include <sys\alt_timestamp.h>
 #include <sys\alt_alarm.h>
-#include <alarm_handler.c>
-#include <tcb.c>
 #define ALARMTICKS(x) ((alt_ticks_per_second()*(x))/10)
 #define MAX 2555
 
 // Note that ALARMTICKS(5) = 1 * 5 / 10 or 0.5 seconds
 int main()
 {
+	//alt_printf("This is my prototype OS.\n");
 	prototype_os();
 	return 0;
 }
 void prototype_os()
 {
 	// initialize the timer and its interrupt handler
+
+	my_interrupt_handler();
 	initialize_alarm();
+
+	int i;
+	for(i=0;i<12;i++){
+		initialize_thread(i);
+	}
 	while (1)
 	{
 		//printf("This is my prototype OS.\n");
 		int j;
 	// a delay loop is used below. Try adjust the value of MAX
-	for (j = 0; j < MAX; j++){
+	for (j = 0; j < 2554; j++){
 
 	}
 	}

@@ -4,11 +4,10 @@
 #include <sys\alt_irq.h>
 #include <sys\alt_timestamp.h>
 #include <sys\alt_alarm.h>
-#include <tcb.c>
 alt_alarm alarm ;
 
 void my_interrupt_handler(){
-
+//printf("handler\n");
 }
 
 void initialize_alarm(){

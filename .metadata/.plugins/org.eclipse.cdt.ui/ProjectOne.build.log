@@ -2,57 +2,62 @@
 **** Build of configuration Nios II for project ProjectOne ****
 
 make all 
-      0 [main] sh 6532 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+     12 [main] sh 5384 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 the public mailing list cygwin@cygwin.com
-      0 [main] sh 4076 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+      0 [main] sh 4660 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 the public mailing list cygwin@cygwin.com
-      0 [main] sh 5996 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+      0 [main] sh 5472 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 the public mailing list cygwin@cygwin.com
-      0 [main] sh 184 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+      0 [main] sh 6860 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 the public mailing list cygwin@cygwin.com
-      0 [main] echo 4128 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
-the public mailing list cygwin@cygwin.com
+      0 [main] echo 6644 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 Info: Building C:/Users/abschmidt/workspace/ProjectOne_bsp/
+the public mailing list cygwin@cygwin.com
 make --no-print-directory -C C:/Users/abschmidt/workspace/ProjectOne_bsp/
-      0 [main] pwd 1216 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+      0 [main] pwd 3580 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 the public mailing list cygwin@cygwin.com
-      0 [main] sh 6148 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+     14 [main] sh 1920 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 the public mailing list cygwin@cygwin.com
-      0 [main] sh 1768 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+      0 [main] sh 5548 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 the public mailing list cygwin@cygwin.com
 [BSP build complete]
-      0 [main] echo 7016 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+      0 [main] echo 6636 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 Info: Compiling tcb.c to obj/default/tcb.o
 the public mailing list cygwin@cygwin.com
-      0 [main] mkdir 6308 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
-nios2-elf-gcc -xc -MP -MMD -c -IC:/Users/abschmidt/workspace/ProjectOne_bsp//HAL/inc -IC:/Users/abschmidt/workspace/ProjectOne_bsp/ -IC:/Users/abschmidt/workspace/ProjectOne_bsp//drivers/inc  -DSYSTEM_BUS_WIDTH=32 -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -DALT_SINGLE_THREADED    -O0 -g -Wall   -EL -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/tcb.o tcb.c
+      0 [main] mkdir 3292 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 the public mailing list cygwin@cygwin.com
+nios2-elf-gcc -xc -MP -MMD -c -IC:/Users/abschmidt/workspace/ProjectOne_bsp//HAL/inc -IC:/Users/abschmidt/workspace/ProjectOne_bsp/ -IC:/Users/abschmidt/workspace/ProjectOne_bsp//drivers/inc  -DSYSTEM_BUS_WIDTH=32 -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -DALT_SINGLE_THREADED    -O0 -g -Wall   -EL -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/tcb.o tcb.c
+tcb.c:1:20: warning: header.h: No such file or directory
 tcb.c: In function 'initialize_thread':
 tcb.c:16: warning: implicit declaration of function 'malloc'
 tcb.c:16: warning: incompatible implicit declaration of built-in function 'malloc'
 tcb.c:16: warning: assignment makes integer from pointer without a cast
-      0 [main] true 6412 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+tcb.c: In function 'my_scheduler':
+tcb.c:24: warning: implicit declaration of function 'printf'
+tcb.c:24: warning: incompatible implicit declaration of built-in function 'printf'
+tcb.c:28: warning: implicit declaration of function 'alt_printf'
+      0 [main] true 6676 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 the public mailing list cygwin@cygwin.com
-      0 [main] echo 5152 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+      2 [main] echo 3064 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 Info: Linking ProjectOne.elf
 the public mailing list cygwin@cygwin.com
 nios2-elf-g++  -T'C:/Users/abschmidt/workspace/ProjectOne_bsp//linker.x' -msys-crt0='C:/Users/abschmidt/workspace/ProjectOne_bsp//obj/HAL/src/crt0.o' -msys-lib=hal_bsp -LC:/Users/abschmidt/workspace/ProjectOne_bsp/   -Wl,-Map=ProjectOne.map   -O0 -g -Wall   -EL -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o ProjectOne.elf obj/default/alarm_handler.o obj/default/project1.o obj/default/tcb.o obj/default/alt_edit.o -lm 
 nios2-elf-insert ProjectOne.elf --thread_model hal --cpu_name CPU --simulation_enabled false --id 0 --sidp 0x10002020 --timestamp 1305842390 --stderr_dev JTAG_UART --stdin_dev JTAG_UART --stdout_dev JTAG_UART --sopc_system_name nios_system --quartus_project_dir "c:/Users/abschmidt/Downloads/DE2_NIOS-II" --sopcinfo C:/Users/abschmidt/Downloads/DE2_NIOS-II/nios_system.sopcinfo
-      0 [main] sh 3952 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+      0 [main] sh 6292 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 the public mailing list cygwin@cygwin.com
-      0 [main] uname 6596 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+      0 [main] uname 6376 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 the public mailing list cygwin@cygwin.com
-      0 [main] sh 2996 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+      0 [main] sh 6884 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 the public mailing list cygwin@cygwin.com
-Info: (ProjectOne.elf) 59 KBytes program size (code + initialized data).
-Info:                  8125 KBytes free for stack + heap.
-      0 [main] echo 7292 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+Info: (ProjectOne.elf) 60 KBytes program size (code + initialized data).
+Info:                  8124 KBytes free for stack + heap.
+      0 [main] echo 2688 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 Info: Creating ProjectOne.objdump
 the public mailing list cygwin@cygwin.com
 nios2-elf-objdump --disassemble --syms --all-header --source ProjectOne.elf >ProjectOne.objdump
-      0 [main] sh 5316 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+      0 [main] sh 3520 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 the public mailing list cygwin@cygwin.com
-      0 [main] sh 1272 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
+      0 [main] sh 4860 find_fast_cwd: WARNING: Couldn't compute FAST_CWD pointer.  Please report this problem to
 the public mailing list cygwin@cygwin.com
 [ProjectOne build complete]
 
