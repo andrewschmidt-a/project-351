@@ -1,5 +1,0 @@
-
-void my_interrupt_handler(){
-	printf("Test%d\n", k);
-	k++;
-}

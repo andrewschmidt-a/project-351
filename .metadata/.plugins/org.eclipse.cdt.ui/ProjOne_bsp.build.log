@@ -1,7 +1,0 @@
-
-**** Clean-only build of configuration Nios II for project ProjOne_bsp ****
-
-make clean 
-make: *** [clean] Error -1073741502
-
-**** Build Finished ****
