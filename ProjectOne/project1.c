@@ -25,6 +25,12 @@
 // Note that ALARMTICKS(5) = 1 * 5 / 10 or 0.5 seconds
 int main()
 {
+	initialize_alarm();
+
+	int i;
+	for(i=0;i<12;i++){
+		initialize_thread(i);
+	}
 	//alt_printf("This is my prototype OS.\n");
 	prototype_os();
 	return 0;
@@ -33,13 +39,6 @@ void prototype_os()
 {
 	// initialize the timer and its interrupt handler
 
-	my_interrupt_handler();
-	initialize_alarm();
-
-	int i;
-	for(i=0;i<12;i++){
-		initialize_thread(i);
-	}
 	while (1)
 	{
 		//printf("This is my prototype OS.\n");

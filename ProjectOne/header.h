@@ -8,7 +8,7 @@
 #ifndef HEADER_H_
 #define HEADER_H_
 
-
+void my_thread();
 //int my_scheduler(int sp);
 
 
