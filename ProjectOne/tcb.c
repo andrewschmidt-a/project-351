@@ -20,8 +20,9 @@ struct thread{
 	alt_u32 *stack_pointer;
 	alt_u32 state;
 	alt_u32 priority;
+	alt_u32 runs;
 };
-
+struct thread threads[12];
 alt_u32 current_thread = 0;
 extern from_handler;
 int check_interrupt(){
@@ -29,15 +30,22 @@ int check_interrupt(){
 	printf("check:%x\n",current_thread );}
 	return from_handler;
 }
-void my_thread(){
-	alt_printf("This is my thread\n");
+void my_thread(alt_u32 thread_id){
 	int i = 0;
-	for(i=0; i<6; i++){
+	for(i=0; i<0xFFF; i++){
+
+	}
+	alt_printf("This is my thread:%x\n", thread_id);
+}
+void join_thread(alt_u32 id){
+	while(threads[id].state != 2){
 
 	}
 }
 void destroy_thread(){
 	//ENABLE_INTERRUPTS();
+	free(threads[current_thread].stack_address);
+	threads[current_thread].state = 2;
 	while(1){
 		int i = 0;
 		for(i=0; i<2555; i++){
@@ -45,35 +53,66 @@ void destroy_thread(){
 		}
 	}
 }
-int numthreads =0;
-struct thread threads[12];
 
-void initialize_thread(int num_thread){
+void initialize_thread(int num_thread, int priority){
 
 		threads[num_thread].stack_size = 700;
 		threads[num_thread].stack_address = malloc(threads[num_thread].stack_size);
 		threads[num_thread].stack_pointer = threads[num_thread].stack_address+threads[num_thread].stack_size-19;
 		threads[num_thread].state = 0;
-		threads[num_thread].priority=0;
+		threads[num_thread].priority=priority;
+
+		//initialize stack
 		threads[num_thread].stack_pointer[-1] = threads[num_thread].stack_address+threads[num_thread].stack_size;
 		threads[num_thread].stack_pointer[0] = &destroy_thread;
+		threads[num_thread].stack_pointer[5] = num_thread;
 		threads[num_thread].stack_pointer[18] = &my_thread; //72
 		threads[num_thread].stack_pointer[17] = 1;
 }
 alt_u32 my_scheduler(alt_u32 *sp){//round robin
 	from_handler = 0;
-	//current_thread = sp[19];
 	if(current_thread == 0){
-		alt_printf("Zero\n");
+		//alt_printf("Zero\n");
 	}
-	//threads[current_thread].stack_pointer= sp;
-	current_thread = (current_thread+1)%12;
-	alt_printf("test:%x\n",current_thread );
-	//int temp = sp[0];
+
+	/* This section of code is for testing to make sure the threads haven't finished */
+	int thread_count = 0;
+	if(threads[current_thread].state == 1)						//Check to see if thread is in "Running" state
+	{
+		alt_printf("This test ran\n");
+		threads[current_thread].state = 3;						//If so we change the state to paused
+		current_thread = (current_thread+1)%12;					//and move on to the next thread
+	}
+	while(threads[current_thread].state == 2 && thread_count < 12)
+	{
+		alt_printf("We have a dead thread\n");
+		thread_count++;											//This is used to keep track to see how many times we've run through the code
+		current_thread = (current_thread+1)%12;					//Move to the next thread
+	}
+
+	threads[current_thread].state = 1;
+
+	/* This is going to be a test to see if memory retention is working */
+	if(current_thread == 6)
+	{
+		threads[current_thread].state = 2;
+	}
+
+	//alt_printf("test:%x\n",current_thread );
 	threads[current_thread].stack_pointer[0] =  &destroy_thread;
 	threads[current_thread].stack_pointer[19] = current_thread;
-	//initialize_alarm();
-	reset_alarm(alt_ticks_per_second()*1);
+
+
+	/* This is for setting the run quantum time */
+	int x = 1;
+	if(threads[current_thread].priority == 0)
+		x = 2;
+	if(threads[current_thread].priority == 1)
+		x = 1.5;
+	reset_alarm(alt_ticks_per_second()*x);
+	threads[current_thread].runs++;
+	alt_printf("Run count: %x\n",threads[current_thread].runs);
+
 	return (void *)threads[current_thread].stack_pointer;
 
 	//return sp;

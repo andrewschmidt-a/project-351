@@ -28,11 +28,21 @@
 int main()
 {
 	int i;
-	for(i=0;i<12;i++){
-		initialize_thread(i);
+	for(i=0;i<5;i++){
+		initialize_thread(i, 0);
+	}
+	for(i=5;i<8;i++){
+		initialize_thread(i, 1);
+	}
+	for(i=8;i<12;i++){
+		initialize_thread(i, 2);
 	}
 	initialize_alarm();
 	//alt_printf("This is my prototype OS.\n");
+
+	for(i=0;i<12;i++){
+		join_thread(i);
+	}
 	prototype_os();
 	return 0;
 }
@@ -42,7 +52,7 @@ void prototype_os()
 
 	while (1)
 	{
-		//printf("This is my prototype OS.\n");
+		printf("This is my prototype OS.\n");
 		int j;
 	// a delay loop is used below. Try adjust the value of MAX
 	for (j = 0; j < 2554; j++){
