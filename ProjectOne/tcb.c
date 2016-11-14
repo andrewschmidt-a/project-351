@@ -4,15 +4,25 @@
 #include <sys\alt_irq.h>
 #include <sys\alt_timestamp.h>
 #include <sys\alt_alarm.h>
-int current_thread = 0;
+// disable an interrupt
+#define DISABLE_INTERRUPTS() { \
+asm("wrctl status, zero"); \
+}
+// enable an interrupt
+#define ENABLE_INTERRUPTS() { \
+asm("movi et, 1"); \
+asm("wrctl status, et"); \
+}
 struct thread{
-	int id;
-	int *stack_address;
-	int stack_size;
-	int *stack_pointer;
-	int state;
-	int priority;
+	alt_u32 id;
+	alt_u32 *stack_address;
+	alt_u32 stack_size;
+	alt_u32 *stack_pointer;
+	alt_u32 state;
+	alt_u32 priority;
 };
+
+alt_u32 current_thread = 0;
 extern from_handler;
 int check_interrupt(){
 	if(from_handler == 1){
@@ -20,14 +30,20 @@ int check_interrupt(){
 	return from_handler;
 }
 void my_thread(){
-	printf("This is my thread\n");
+	alt_printf("This is my thread\n");
 	int i = 0;
-	for(i=0; i<255; i++){
+	for(i=0; i<6; i++){
 
 	}
 }
 void destroy_thread(){
-	prototype_os();
+	//ENABLE_INTERRUPTS();
+	while(1){
+		int i = 0;
+		for(i=0; i<2555; i++){
+
+		}
+	}
 }
 int numthreads =0;
 struct thread threads[12];
@@ -36,24 +52,30 @@ void initialize_thread(int num_thread){
 
 		threads[num_thread].stack_size = 700;
 		threads[num_thread].stack_address = malloc(threads[num_thread].stack_size);
-		threads[num_thread].stack_pointer = threads[num_thread].stack_address-threads[num_thread].stack_size/2;
+		threads[num_thread].stack_pointer = threads[num_thread].stack_address+threads[num_thread].stack_size-19;
 		threads[num_thread].state = 0;
 		threads[num_thread].priority=0;
-		threads[num_thread].stack_pointer[0] = &my_thread;
-		threads[num_thread].stack_pointer[18] = &my_thread;
+		threads[num_thread].stack_pointer[-1] = threads[num_thread].stack_address+threads[num_thread].stack_size;
+		threads[num_thread].stack_pointer[0] = &destroy_thread;
+		threads[num_thread].stack_pointer[18] = &my_thread; //72
+		threads[num_thread].stack_pointer[17] = 1;
 }
-int my_scheduler(int *sp){//round robin
+alt_u32 my_scheduler(alt_u32 *sp){//round robin
 	from_handler = 0;
+	//current_thread = sp[19];
 	if(current_thread == 0){
-		printf("Zero\n");
+		alt_printf("Zero\n");
 	}
 	//threads[current_thread].stack_pointer= sp;
 	current_thread = (current_thread+1)%12;
-	alt_printf("test:%d\n",current_thread );
-	int temp = sp[0];
-	threads[current_thread].stack_pointer[0] =  temp;
+	alt_printf("test:%x\n",current_thread );
+	//int temp = sp[0];
+	threads[current_thread].stack_pointer[0] =  &destroy_thread;
+	threads[current_thread].stack_pointer[19] = current_thread;
 	//initialize_alarm();
-	return threads[current_thread].stack_pointer;
+	reset_alarm(alt_ticks_per_second()*1);
+	return (void *)threads[current_thread].stack_pointer;
+
 	//return sp;
 }
 

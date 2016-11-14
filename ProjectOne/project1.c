@@ -15,6 +15,8 @@
  */
 
 #include <stdio.h>
+#include <stddef.h>
+#include <alt_types.h>
 #include <sys\alt_stdio.h>
 #include <sys\alt_irq.h>
 #include <sys\alt_timestamp.h>
@@ -25,12 +27,11 @@
 // Note that ALARMTICKS(5) = 1 * 5 / 10 or 0.5 seconds
 int main()
 {
-	initialize_alarm();
-
 	int i;
 	for(i=0;i<12;i++){
 		initialize_thread(i);
 	}
+	initialize_alarm();
 	//alt_printf("This is my prototype OS.\n");
 	prototype_os();
 	return 0;
