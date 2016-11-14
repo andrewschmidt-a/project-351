@@ -32,7 +32,7 @@ int check_interrupt(){
 }
 void my_thread(alt_u32 thread_id){
 	int i = 0;
-	for(i=0; i<0xFFF; i++){
+	for(i=0; i<0xFFFFF; i++){
 
 	}
 	alt_printf("This is my thread:%x\n", thread_id);
@@ -56,9 +56,9 @@ void destroy_thread(){
 
 void initialize_thread(int num_thread, int priority){
 
-		threads[num_thread].stack_size = 700;
+		threads[num_thread].stack_size = 4096;
 		threads[num_thread].stack_address = malloc(threads[num_thread].stack_size);
-		threads[num_thread].stack_pointer = threads[num_thread].stack_address+threads[num_thread].stack_size-19;
+		threads[num_thread].stack_pointer = (alt_u32 *)(threads[num_thread].stack_address+threads[num_thread].stack_size-19*sizeof(alt_u32));
 		threads[num_thread].state = 0;
 		threads[num_thread].priority=priority;
 
@@ -69,8 +69,14 @@ void initialize_thread(int num_thread, int priority){
 		threads[num_thread].stack_pointer[18] = &my_thread; //72
 		threads[num_thread].stack_pointer[17] = 1;
 }
-alt_u32 my_scheduler(alt_u32 *sp){//round robin
+int first_run = 1;
+alt_u32 main_context;
+alt_u32* my_scheduler(alt_u32 *sp){//round robin
 	from_handler = 0;
+	if(first_run == 1){
+		main_context = sp;
+		first_run =0;
+	}
 	if(current_thread == 0){
 		//alt_printf("Zero\n");
 	}
@@ -80,7 +86,9 @@ alt_u32 my_scheduler(alt_u32 *sp){//round robin
 	if(threads[current_thread].state == 1)						//Check to see if thread is in "Running" state
 	{
 		alt_printf("This test ran\n");
-		threads[current_thread].state = 3;						//If so we change the state to paused
+		threads[current_thread].state = 3;//If so we change the state to paused
+		threads[current_thread].stack_pointer = sp;
+		alt_printf("stack pointer_after run thread[%x]: %x\n", current_thread, sp);
 		current_thread = (current_thread+1)%12;					//and move on to the next thread
 	}
 	while(threads[current_thread].state == 2 && thread_count < 12)
@@ -89,8 +97,11 @@ alt_u32 my_scheduler(alt_u32 *sp){//round robin
 		thread_count++;											//This is used to keep track to see how many times we've run through the code
 		current_thread = (current_thread+1)%12;					//Move to the next thread
 	}
-
-	threads[current_thread].state = 1;
+if(thread_count == 12){ // all are dead
+	first_run = 1;
+	return main_context;
+}
+	threads[current_thread].state = 1;  // set to running
 
 	/* This is going to be a test to see if memory retention is working */
 	if(current_thread == 6)
@@ -100,7 +111,6 @@ alt_u32 my_scheduler(alt_u32 *sp){//round robin
 
 	//alt_printf("test:%x\n",current_thread );
 	threads[current_thread].stack_pointer[0] =  &destroy_thread;
-	threads[current_thread].stack_pointer[19] = current_thread;
 
 
 	/* This is for setting the run quantum time */
@@ -111,6 +121,7 @@ alt_u32 my_scheduler(alt_u32 *sp){//round robin
 		x = 1.5;
 	reset_alarm(alt_ticks_per_second()*x);
 	threads[current_thread].runs++;
+	alt_printf("Stack pointer_prerun thread[%x]: %x\n", current_thread,threads[current_thread].stack_pointer);
 	alt_printf("Run count: %x\n",threads[current_thread].runs);
 
 	return (void *)threads[current_thread].stack_pointer;
