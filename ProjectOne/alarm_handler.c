@@ -19,7 +19,7 @@ alt_u32 my_interrupt_handler(){
 	DISABLE_INTERRUPTS();
 	printf("handler\n");
 	from_handler = 1;
-	return alt_ticks_per_second();
+	return 0;
 }
 
 void initialize_alarm(){
